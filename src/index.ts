@@ -46,12 +46,9 @@ class ProfessionistaMedia implements IProfessionistaMedia {
 
   partecipaProgramma(programma: IProgrammaFormazione): void {
     programma.aggiungiPartecipante(this);
-    console.log(
-      `${this.nome} ${this.cognome} si è iscritta al programma "${programma.titolo}".`
-    );
   }
 }
-//-- Class ProgrammaFormzione --
+//-- Class ProgrammaFormazione --
 class ProgrammaFormazione implements IProgrammaFormazione {
   public partecipanti: IProfessionistaMedia[] = [];
 
@@ -63,10 +60,16 @@ class ProgrammaFormazione implements IProgrammaFormazione {
   ) {}
 
   aggiungiPartecipante(professionista: IProfessionistaMedia): void {
-    this.partecipanti.push(professionista);
-    console.log(
-      `Aggiunta ${professionista.nome} ${professionista.cognome} al programma "${this.titolo}".`
-    );
+    if (this.partecipanti.includes(professionista)) {
+      console.log(
+        `${professionista.nome} ${professionista.cognome} è già iscritta al programma "${this.titolo}".`
+      );
+    } else {
+      this.partecipanti.push(professionista);
+      console.log(
+        `Aggiunta ${professionista.nome} ${professionista.cognome} al programma "${this.titolo}".`
+      );
+    }
   }
 }
 //-- Class Piattaforma --
@@ -147,23 +150,73 @@ const programma3 = new ProgrammaFormazione(
   30 // Durata in ore
 );
 // Piattaforme di Pubblicazione
-const blogPiattaforma = new Piattaforma(
+const piattaforma1 = new Piattaforma(
   'Voci Blog',
   'online',
   'Piattaforma online per articoli e opinioni.',
   ['blog', 'articoli', 'opinioni']
 );
 
-const canaleYoutube = new Piattaforma(
-  'Voci YouTube',
+const piattaforma2 = new Piattaforma(
+  'YouTube',
   'audiovisivo',
   'Canale YouTube per video e documentari.',
   ['video', 'documentari', 'interviste']
 );
 
-const tiktokPiattaforma = new Piattaforma(
-  'Voci TikTok',
-  'audiovisivo',
-  'Piattaforma per video brevi e contenuti virali che promuovono la parità di genere e la diversità.',
-  ['video brevi', 'contenuti virali', 'advocacy']
+const piattaforma3 = new Piattaforma(
+  'Elle Magazine',
+  'stampato',
+  'Una delle riviste più influenti per le donne, con un focus su moda, cultura e empowerment femminile.',
+  ['moda', 'cultura', 'empowerment']
 );
+
+console.log(
+  'Simulazione di interazione tra professioniste e programmi di formazione:'
+);
+console.log('\n');
+// Partecipazione delle professioniste ai programmi di formazione
+professionista1.partecipaProgramma(programma1); // Alessandra Greco partecipa al programma 1
+professionista2.partecipaProgramma(programma2); // Valentina De Luca partecipa al programma 2
+professionista3.partecipaProgramma(programma1); // Silvia Marchetti partecipa al programma 3
+professionista4.partecipaProgramma(programma1); // Ludovica Romano partecipa al programma 1
+professionista5.partecipaProgramma(programma2); // Federica Bellini partecipa al programma 2
+professionista4.partecipaProgramma(programma1); // Ludovica Romano era già iscritta al programma 1
+console.log('\n');
+console.log('----------------------------------------');
+// Pubblicazione dei contenuti creati dalle professioniste
+piattaforma1.pubblicaContenuto(
+  professionista1,
+  "Articolo sull'innovazione nei media digitali."
+);
+piattaforma2.pubblicaContenuto(
+  professionista2,
+  'Documentario su come la realtà aumentata trasforma le storie.'
+);
+piattaforma3.pubblicaContenuto(
+  professionista3,
+  'Reportage sulla leadership femminile nel cinema.'
+);
+console.log('\n');
+console.log('----------------------------------------');
+
+// Verifica del funzionamento della logica di collegamento
+function mostraPartecipanti(programma: IProgrammaFormazione): void {
+  console.log(`\nPartecipanti al programma "${programma.titolo}":`);
+  if (programma.partecipanti.length === 0) {
+    console.log('Nessun partecipante registrato.');
+  } else {
+    programma.partecipanti.forEach((partecipante, index) =>
+      console.log(`${index + 1}. ${partecipante.nome} ${partecipante.cognome}`)
+    );
+  }
+  console.log('----------------------------------------');
+}
+// Eseguiamo il test per mostrare i dettagli di un partecipante specifico
+console.log(professionista1);
+console.log('\n');
+console.log('----------------------------------------');
+// Eseguiamo il test per alcuni programmi
+mostraPartecipanti(programma1);
+mostraPartecipanti(programma2);
+mostraPartecipanti(programma3);
